@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model clientes {
+  id          Int    @id @default(autoincrement())
+  nome        String @db.VarChar(100)
+  cep         String @db.VarChar(20)
+  endereco    String @db.VarChar(50)
+  complemento String @db.VarChar(20)
+  bairro      String @db.VarChar(50)
+  cidade      String @db.VarChar(50)
+  uf          String @db.VarChar(2)
+  celular     String @db.VarChar(20)
+  email       String @db.VarChar(20)
+}
+
+model livro {
+  id          BigInt  @id @default(autoincrement())
+  paginas     Int
+  autor       String  @db.VarChar(255)
+  editora     String  @db.VarChar(255)
+  lancamento  String  @db.VarChar(255)
+  titulo      String  @db.VarChar(255)
+  livro_id    BigInt?
+  livro       livro?  @relation("livroTolivro", fields: [livro_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKtc0w4x5niti4nft8ws9jwfytd")
+  other_livro livro[] @relation("livroTolivro")
+
+  @@index([livro_id], map: "FKtc0w4x5niti4nft8ws9jwfytd")
+}
+
+model livros {
+  id        Int      @id @default(autoincrement())
+  titulo    String?  @db.VarChar(255)
+  author    String?  @db.VarChar(255)
+  editora   String?  @db.VarChar(255)
+  paginas   Int?
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+}
+
+model sequelizemeta {
+  name String @id @unique(map: "name") @db.VarChar(255)
+}
+
+model tutorials {
+  id          Int      @id @default(autoincrement())
+  title       String?  @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  published   Boolean?
+  createdAt   DateTime @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
+}
